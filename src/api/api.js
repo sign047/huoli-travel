@@ -8,6 +8,10 @@ const httpBase = "https://travel.huoli.com";
 const getLoginfo = params => {
   return http(httpBase + "/hzgj/loginfo", params);
 };
+//保存手机 savePhone
+const savePhone = params => {
+  return http(httpBase + "/hzgj/savePhone", params);
+};
 // 获取手机号码
 const getPhoneNum = params => {
   return http(httpBase + "/hzgj/getPhone", params);
@@ -66,6 +70,7 @@ const savePicToDB = params => {
 };
 
 export {
+  savePhone,
   getLoginfo,
   getPassportList,
   delPassport,

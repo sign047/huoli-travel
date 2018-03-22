@@ -6,7 +6,7 @@ app.$mount();
 
 export default {
   config: {
-    navigationBarTitleText: "拍摄示例",
+    navigationBarTitleText: "护照管家",
     navigationBarBackgroundColor: "#fff"
   }
 };

@@ -6,8 +6,6 @@ import {
 } from "@/utils/wxApi";
 import Tip from "@/utils/tip";
 import { getLoginfo } from "@/api/api";
-
-let token = getStorageSync("authToken");
 const user = {
   state: {
     authToken: getStorageSync("authToken"),
@@ -79,52 +77,55 @@ const user = {
     //login
     GetUserInfo({ dispatch, commit, state }, params) {
       commit("SET_LOGIN_LOADING", true);
-      return new Promise((resolve, reject) => {
-        wxLogin()
-          .then(res => {
-            commit("SET_CODE", res.code);
-            return wxUserInfo();
-          })
-          .then(res => {
-            let { nickName, avatarUrl, gender } = res.userInfo;
-            commit("SET_NAME", nickName);
-            commit("SET_AVATAR", avatarUrl);
-            commit("SET_INTRODUCTION", gender);
-            commit("SET_LOGIN_LOADING", false);
-            resolve(res);
-          })
-          .catch(err => {
-            commit("SET_LOGIN_LOADING", false);
-            reject("aaaa");
-            if (err.code && err.title) {
-              Tip.confirm({
-                text: err.content,
-                showCancel: false,
-                title: err.title
-              });
-            }
-          });
-      });
+      // return new Promise((resolve, reject) => {
+      wxLogin()
+        .then(res => {
+          commit("SET_CODE", res.code);
+          return wxUserInfo();
+        })
+        .then(res => {
+          let { nickName, avatarUrl, gender } = res.userInfo;
+          commit("SET_NAME", nickName);
+          commit("SET_AVATAR", avatarUrl);
+          commit("SET_INTRODUCTION", gender);
+          commit("SET_LOGIN_LOADING", false);
+          // resolve(res);
+        })
+        .catch(err => {
+          commit("SET_LOGIN_LOADING", false);
+          // reject("aaaa");
+          if (err.code && err.title) {
+            Tip.confirm({
+              text: err.content,
+              showCancel: false,
+              title: err.title
+            });
+          }
+          // });
+        });
     },
     // 获取用户信息
-    async GetAuthToken({ dispatch, commit, state }, params) {
+    GetAuthToken({ dispatch, commit, state }, params) {
       let userInfo = dispatch("GetUserInfo");
-      userInfo.then(res => {
-        let { encryptedData, iv } = res;
-        let code = state.code;
-        return new Promise((resolve, reject) => {
-          getLoginfo({ encryptedData, iv, code })
-            .then(res => {
-              let { authToken, phone } = res.object;
-              commit("SET_TOKEN", authToken);
-              commit("SET_PHONE_FLAG", phone);
-              resolve(res);
-            })
-            .catch(error => {
-              reject(error);
-            });
-        });
-      });
+
+      // userInfo.then(res => {
+      //   let { encryptedData, iv } = res;
+      //   let code = state.code;
+      //   // return new Promise((resolve, reject) => {
+      //   return getLoginfo({ encryptedData, iv, code })
+      //     .then(res => {
+      //       let { authToken, phone } = res.object;
+      //       commit("SET_TOKEN", authToken);
+      //       commit("SET_PHONE_FLAG", phone);
+      //       console.log(1);
+      //       // resolve(res);
+      //     })
+      //     .catch(error => {
+      //       console.log(2);
+      //       // reject(error);
+      //     });
+      // });
+      // });
     }
   }
 };
